@@ -5,7 +5,7 @@
 <link href="style.css" rel="stylesheet">
 <style>
   img {
-    -webkit-clip-path: polygon(80px 0, 158px 45px, 158px 132px, 80px 177px, 0 132px, 0 45px);
+    -webkit-clip-path: polygon(100px 0, 178px 45px, 178px 132px, 100px 177px, 20px 132px, 20px 45px);
     clip-path: url(#hexagon);
   }
 </style>
@@ -25,7 +25,7 @@
 <div id="pics"></div>
 <svg width="0" height="0">
   <clipPath id="hexagon">
-    <polygon points="80 0, 158 45, 158 132, 80 177, 0 132, 0 45"></polygon>
+    <polygon points="100 0, 178 45, 178 132, 100 177, 20 132, 20 45"></polygon>
   </clipPath>
 </svg>
 <script>
@@ -51,7 +51,7 @@
 
     function renderPictures (pics) {
       var ct = document.getElementById("pics")
-        , x = 0
+        , x = -20
         , y = -45
         , width = window.innerWidth
         , alternate = false
@@ -72,9 +72,9 @@
           alternate = !alternate
 
           if (alternate) {
-            x = -80
+            x = -100
           } else {
-            x = 0
+            x = -20
           }
 
           y = y + 134 
