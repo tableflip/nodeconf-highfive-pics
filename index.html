@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<title>NodeConf 2014 NodeBots workshop high five machine photos!</title>
+<link href="style.css" rel="stylesheet">
+<style>
+  img {
+    -webkit-clip-path: polygon(80px 0, 158px 45px, 158px 132px, 80px 177px, 0 132px, 0 45px);
+    clip-path: url(#hexagon);
+  }
+</style>
+</head>
+<div class="nodebot">
+  <div class="icon">
+    <div class="bobble"></div>
+    <div class="antenna"></div>
+    <div class="head">
+      <div class="eye left"></div>
+      <div class="eye right"></div>
+    </div>
+    <div class="neck"></div>
+    <div class="neck"></div>
+  </div>
+</div>
+<div id="pics"></div>
+<svg width="0" height="0">
+  <clipPath id="hexagon">
+    <polygon points="80 0, 158 45, 158 132, 80 177, 0 132, 0 45"></polygon>
+  </clipPath>
+</svg>
+<script>
+  (function () {
+
+    function getPictures (cb) {
+      var request = new XMLHttpRequest()
+      request.open("GET", "pictures.json", true)
+      request.onload = function () {
+        if (!(this.status >= 200 && this.status < 400)) {
+          return cb(new Error("Server returned status " + this.status))
+        }
+
+        try {
+          cb(null, JSON.parse(this.response))
+        } catch (er) {
+          cb(er)
+        }
+      }
+      request.onerror = cb
+      request.send()
+    }
+
+    function renderPictures (pics) {
+      var ct = document.getElementById("pics")
+        , x = 0
+        , y = -45
+        , width = window.innerWidth
+        , alternate = false
+
+      ct.style.width = width + "px"
+
+      pics.forEach(function (url) {
+        var img = document.createElement("img")
+
+        img.src = "img/" + url
+        img.onload = function () { img.className = "fade-in" }
+        img.style.left = x + "px"
+        img.style.top = y + "px"
+
+        x = x + 160
+
+        if (x > width) {
+          alternate = !alternate
+
+          if (alternate) {
+            x = -80
+          } else {
+            x = 0
+          }
+
+          y = y + 134 
+        }
+        
+        ct.appendChild(img)
+      })
+      
+      ct.style.height = (y + 177) + "px"
+    }
+
+    getPictures(function (er, pics) {
+      if (er) throw er
+      renderPictures(pics)
+    })
+  })()
+
+</script>
+</html>
